@@ -36,37 +36,35 @@ export default {
       stations: [],
       search: '',
       headers: [
-        { text: 'Radio Station', align: 'start', value: 'name' }
+        { text: 'Radio Station', align: 'start', sortable: false, value: 'name' }
       ],
       loading: false,
     };
   },
   computed: {
-  filteredStations() {
-    console.log("Filtering stations with search:", this.search);
-    const filtered = this.stations
-      .filter(station =>
+    filteredStations() {
+      return this.stations.filter(station =>
         station.name.toLowerCase().includes(this.search.toLowerCase())
       );
-    console.log("Filtered stations:", filtered);
-    return filtered;
-  }
-},
-
+    }
+  },
   methods: {
-  fetchStations() {
-    this.loading = true;
-    axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
-      .then(response => {
-        console.log('Stations loaded:', response.data); // Aggiungi questo per controllare i dati
-        this.stations = response.data;
-        this.loading = false;
-      })
-      .catch(error => {
-        console.error('Error fetching stations:', error);
-        this.loading = false;
-      });
-   },
+    fetchStations() {
+      this.loading = true;
+      axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
+        .then(response => {
+          if (response.data && Array.isArray(response.data)) {
+            this.stations = response.data;
+          } else {
+            console.error('No data or unexpected data format:', response);
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('Error fetching stations:', error);
+          this.loading = false;
+        });
+    },
     playRadio(url) {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
