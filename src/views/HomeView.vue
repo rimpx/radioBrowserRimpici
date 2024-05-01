@@ -37,32 +37,40 @@ export default {
   data() {
     return {
       stations: [],
-      search: ''
+      search: '',
+      loading: false,
     };
   },
   computed: {
+    // Filtro le stazioni in base alla ricerca e le ordino in ordine alfabetico
     filteredStations() {
       return this.stations
-        .filter(station => station.name.toLowerCase().includes(this.search.toLowerCase()))
-        .sort((a, b) => a.name.localeCompare(b.name)); // Aggiunge ordinamento alfabetico
+        .filter(station =>
+          station.name.toLowerCase().includes(this.search.toLowerCase())
+        )
+        .sort((a, b) => a.name.localeCompare(b.name));
     }
   },
   methods: {
+    // Metodo per ottenere le stazioni radio
     fetchStations() {
-      axios
-        .get('https://de1.api.radio-browser.info/json/stations?limit=100')
+      this.loading = true;
+      axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
         .then(response => {
           this.stations = response.data;
+          this.loading = false;
         })
         .catch(error => {
           console.error('Error fetching stations:', error);
+          this.loading = false;
         });
     },
+    // Metodo per riprodurre la radio selezionata
     playRadio(url) {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
       audio.play();
-      audio.style.visibility = 'visible';
+      audio.style.visibility = 'visible'; // Rende visibile il player audio quando viene usato
     }
   },
   mounted() {
@@ -70,6 +78,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .v-list-item {
