@@ -42,7 +42,6 @@ export default {
     };
   },
   computed: {
-    // Filtro le stazioni in base alla ricerca e le ordino in ordine alfabetico
     filteredStations() {
       return this.stations
         .filter(station =>
@@ -52,7 +51,6 @@ export default {
     }
   },
   methods: {
-    // Metodo per ottenere le stazioni radio
     fetchStations() {
       this.loading = true;
       axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
@@ -65,12 +63,17 @@ export default {
           this.loading = false;
         });
     },
-    // Metodo per riprodurre la radio selezionata
     playRadio(url) {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
       audio.play();
-      audio.style.visibility = 'visible'; // Rende visibile il player audio quando viene usato
+      audio.style.visibility = 'visible';
+    }
+  },
+  filters: {
+    formatTags(value) {
+      if (!value) return '';
+      return value.replace(/,/g, ',<br>');
     }
   },
   mounted() {
@@ -78,6 +81,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>
