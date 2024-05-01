@@ -1,21 +1,15 @@
-import { createApp } from 'vue';
-import { createVuetify } from 'vuetify';
-import 'vuetify/styles';  // Assicurati di importare i nuovi stili di Vuetify 3
-import App from './App.vue';
-import router from './router';
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-const app = createApp(App);
-
-// Crea l'istanza di Vuetify
 const vuetify = createVuetify({
-  // qui puoi configurare ulteriormente Vuetify se necessario
-});
+  components,
+  directives,
+})
 
-// Usa Vuetify
-app.use(vuetify);
-
-// Configura il router se il tuo progetto lo utilizza
-app.use(router);
-
-// Monta l'app
-app.mount('#app');
+createApp(App).use(router).use(vuetify).mount('#app')

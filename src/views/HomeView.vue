@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>Homepage</h1>
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
@@ -9,7 +10,7 @@
     ></v-text-field>
     <v-data-table
       :headers="headers"
-      :items="filteredStations"
+      :items="radios"
       :search="search"
       hide-default-footer
       class="elevation-1"
@@ -27,37 +28,31 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
+  name: 'HomeView',
   data() {
     return {
-      stations: [],
+      radios: [],
       search: '',
       headers: [
         { text: 'Radio Station', align: 'start', sortable: false, value: 'name' }
-      ],
-      loading: false,
-    };
-  },
-  computed: {
-    filteredStations() {
-      return this.stations.filter(station =>
-        station.name.toLowerCase().includes(this.search.toLowerCase())
-      );
+      ]
     }
   },
   methods: {
-    fetchStations() {
-      this.loading = true;
-      axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
+    getRadios() {
+      fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
         .then(response => {
-          this.stations = response.data;
-          this.loading = false;
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.radios = data;
         })
         .catch(error => {
-          console.error('Error fetching stations:', error);
-          this.loading = false;
+          console.error('Error fetching radios:', error);
         });
     },
     playRadio(url) {
@@ -68,10 +63,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchStations();
-  }
-};
+  created() {
+    this.getRadios();
+  },
+}
 </script>
 
 <style scoped>
@@ -87,3 +82,4 @@ export default {
   width: 100%;
 }
 </style>
+
