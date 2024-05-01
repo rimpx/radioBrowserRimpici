@@ -42,9 +42,9 @@ export default {
   },
   computed: {
     filteredStations() {
-      return this.stations.filter(station =>
-        station.name.toLowerCase().includes(this.search.toLowerCase())
-      );
+      return this.stations
+        .filter(station => station.name.toLowerCase().includes(this.search.toLowerCase()))
+        .sort((a, b) => a.name.localeCompare(b.name)); // Aggiunge ordinamento alfabetico
     }
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
       audio.play();
-      audio.style.visibility = 'visible'; // Rende visibile il player quando viene usato
+      audio.style.visibility = 'visible';
     }
   },
   mounted() {
@@ -72,5 +72,21 @@ export default {
 </script>
 
 <style scoped>
-/* Stili aggiuntivi per personalizzare la tua lista e i componenti */
+.v-list-item {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.v-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.v-list-item-title {
+  font-weight: bold;
+}
+
+.audio-player-visible {
+  visibility: visible;
+}
 </style>
+
