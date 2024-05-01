@@ -67,8 +67,12 @@ export default {
     },
     playRadio(url) {
       const audio = this.$refs.audioPlayer;
-      audio.src = url;
-      audio.play();
+      if (audio) {
+        audio.src = url;
+        audio.play();
+      } else {
+        console.error('Audio player not found');
+      }
     }
   },
   mounted() {
@@ -76,6 +80,7 @@ export default {
   }
 };
 </script>
+
 
 
 
@@ -90,6 +95,75 @@ export default {
 
 .v-list {
   width: 100%; /* Garantisce che la lista occupi l'intera larghezza del suo contenitore */
+}
+</style>
+
+
+
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      stations: [],
+      search: '',
+      headers: [
+        { text: 'Radio Station', align: 'start', sortable: false, value: 'name' }
+      ],
+      loading: false,
+    };
+  },
+  computed: {
+    filteredStations() {
+      return this.stations.filter(station =>
+        station.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    }
+  },
+  methods: {
+    fetchStations() {
+      this.loading = true;
+      axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
+        .then(response => {
+          if (response.data && Array.isArray(response.data)) {
+            this.stations = response.data;
+          } else {
+            console.error('No data or unexpected data format:', response);
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('Error fetching stations:', error);
+          this.loading = false;
+        });
+    },
+    playRadio(url) {
+      const audio = this.$refs.audioPlayer;
+      audio.src = url;
+      audio.play();
+    }
+  },
+  mounted() {
+    this.fetchStations();
+  }
+};
+</script>
+
+
+
+<style scoped>
+.v-list-item {
+  display: block;
+}
+
+.v-container {
+  max-width: 100%;
+}
+
+.v-list {
+  width: 100%;
 }
 </style>
 
