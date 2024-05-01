@@ -7,21 +7,24 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-list dense>
-      <v-list-item-group>
-        <v-list-item
-          v-for="station in filteredStations"
-          :key="station.stationuuid"
-          @click="playRadio(station.url)"
-        >
+    <v-data-table
+      :headers="headers"
+      :items="filteredStations"
+      :search="search"
+      hide-default-footer
+      class="elevation-1"
+    >
+      <template v-slot:item.name="{ item }">
+        <v-list-item @click="playRadio(item.url)">
           <v-list-item-content>
-            <v-list-item-title>{{ station.name }}</v-list-item-title>
+            <v-list-item-title v-text="item.name"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
-    </v-list>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
+
 
 <script>
 import axios from 'axios';
