@@ -14,7 +14,8 @@
       hide-default-footer
       class="elevation-1"
     >
-      <template v-slot:item.name="{ item }">
+      <!-- Uso corretto di v-slot con Vuetify -->
+      <template v-slot:item="{ item }">
         <v-list-item @click="playRadio(item.url)">
           <v-list-item-content>
             <v-list-item-title v-text="item.name"></v-list-item-title>
