@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>RadioRimpici</h1>
+    <h1>Homepage</h1>
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
@@ -16,14 +16,21 @@
       class="elevation-1"
     >
       <template v-slot:[`item.name`]="{ item }">
-        <v-list-item @click="playRadio(item.url)">
+        <v-list-item>
           <v-list-item-content>
             <v-list-item-title v-text="item.name"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-btn icon @click="togglePlay(item)">
+          <v-icon>
+            {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
+          </v-icon>
+        </v-btn>
+      </template>
     </v-data-table>
-    <audio ref="audioPlayer" style="display:none;"></audio>
+    <audio ref="audioPlayer" @ended="stopRadio" style="display:none;"></audio>
   </v-container>
 </template>
 
@@ -34,8 +41,10 @@ export default {
     return {
       radios: [],
       search: '',
+      currentRadio: null,
       headers: [
-        { text: 'Radio Station', align: 'start', sortable: false, value: 'name' }
+        { text: 'Radio Station', align: 'start', sortable: false, value: 'name' },
+        { text: 'Actions', align: 'end', sortable: false, value: 'actions' }
       ]
     }
   },
@@ -55,12 +64,19 @@ export default {
           console.error('Error fetching radios:', error);
         });
     },
-    playRadio(url) {
+    togglePlay(item) {
       const audio = this.$refs.audioPlayer;
-      if (audio) {
-        audio.src = url;
+      if (this.currentRadio === item.url) {
+        audio.pause();
+        this.currentRadio = null;
+      } else {
+        audio.src = item.url;
         audio.play();
+        this.currentRadio = item.url;
       }
+    },
+    stopRadio() {
+      this.currentRadio = null;
     }
   },
   created() {
