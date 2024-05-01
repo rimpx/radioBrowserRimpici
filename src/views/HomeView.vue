@@ -73,20 +73,16 @@ export default {
 
 <style scoped>
 .v-list-item {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  display: block; /* Assicurati che ogni item sia trattato come blocco, favorendo un layout verticale */
 }
 
-.v-list-item:hover {
-  background-color: #f0f0f0;
+.v-container {
+  max-width: 100%; /* Utilizza tutta la larghezza disponibile */
 }
 
-.v-list-item-title {
-  font-weight: bold;
-}
-
-.audio-player-visible {
-  visibility: visible;
+.v-list {
+  width: 100%; /* Garantisce che la lista occupi l'intera larghezza del suo contenitore */
 }
 </style>
+
 
