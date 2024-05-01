@@ -1,10 +1,13 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import vuetify from 'vuetify' 
-import 'vuetify/dist/vuetify.min.css' 
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
 
-const app = createApp(App)
+Vue.use(Vuetify);
+
+const app = new Vue({
+  el: '#app',
+  vuetify: new Vuetify(),
+});
 
 app.use(router)
 app.use(vuetify) 

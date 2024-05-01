@@ -42,13 +42,17 @@ export default {
     };
   },
   computed: {
-    filteredStations() {
-      return this.stations
-        .filter(station =>
-          station.name.toLowerCase().includes(this.search.toLowerCase())
-        );
-    }
-  },
+  filteredStations() {
+    console.log("Filtering stations with search:", this.search);
+    const filtered = this.stations
+      .filter(station =>
+        station.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    console.log("Filtered stations:", filtered);
+    return filtered;
+  }
+},
+
   methods: {
   fetchStations() {
     this.loading = true;
