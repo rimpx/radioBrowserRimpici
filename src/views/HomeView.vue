@@ -78,6 +78,7 @@ export default {
 </script>
 
 
+
 <style scoped>
 .v-list-item {
   display: block; /* Assicurati che ogni item sia trattato come blocco, favorendo un layout verticale */
