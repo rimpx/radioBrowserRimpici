@@ -7,7 +7,7 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-list>
+    <v-list dense>
       <v-list-item-group>
         <v-list-item
           v-for="station in filteredStations"
@@ -17,18 +17,11 @@
           <v-list-item-content>
             <v-list-item-title>{{ station.name }}</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-action>
-            <v-btn icon>
-              <v-icon>mdi-play</v-icon>
-            </v-btn>
-          </v-list-item-action>
         </v-list-item>
       </v-list-item-group>
     </v-list>
-    <audio ref="audioPlayer" controls style="width: 100%; visibility: hidden;"></audio>
   </v-container>
 </template>
-
 
 <script>
 import axios from 'axios';
@@ -67,13 +60,6 @@ export default {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
       audio.play();
-      audio.style.visibility = 'visible';
-    }
-  },
-  filters: {
-    formatTags(value) {
-      if (!value) return '';
-      return value.replace(/,/g, ',<br>');
     }
   },
   mounted() {
@@ -81,7 +67,6 @@ export default {
   }
 };
 </script>
-
 
 
 <style scoped>
