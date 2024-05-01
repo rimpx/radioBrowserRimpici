@@ -50,18 +50,19 @@ export default {
     }
   },
   methods: {
-    fetchStations() {
-      this.loading = true;
-      axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
-        .then(response => {
-          this.stations = response.data;
-          this.loading = false;
-        })
-        .catch(error => {
-          console.error('Error fetching stations:', error);
-          this.loading = false;
-        });
-    },
+  fetchStations() {
+    this.loading = true;
+    axios.get('https://de1.api.radio-browser.info/json/stations?limit=100')
+      .then(response => {
+        console.log('Stations loaded:', response.data); // Aggiungi questo per controllare i dati
+        this.stations = response.data;
+        this.loading = false;
+      })
+      .catch(error => {
+        console.error('Error fetching stations:', error);
+        this.loading = false;
+      });
+   },
     playRadio(url) {
       const audio = this.$refs.audioPlayer;
       audio.src = url;
