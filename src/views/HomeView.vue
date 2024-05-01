@@ -34,6 +34,9 @@ export default {
     return {
       stations: [],
       search: '',
+      headers: [
+        { text: 'Radio Station', align: 'start', value: 'name' }
+      ],
       loading: false,
     };
   },
@@ -42,8 +45,7 @@ export default {
       return this.stations
         .filter(station =>
           station.name.toLowerCase().includes(this.search.toLowerCase())
-        )
-        .sort((a, b) => a.name.localeCompare(b.name));
+        );
     }
   },
   methods: {
