@@ -16,7 +16,7 @@
         >
           <v-list-item-content>
             <v-list-item-title>{{ station.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ station.tags }}</v-list-item-subtitle>
+            <v-list-item-subtitle v-html="$options.filters.formatTags(station.tags)"></v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn icon>
@@ -29,6 +29,7 @@
     <audio ref="audioPlayer" controls style="width: 100%; visibility: hidden;"></audio>
   </v-container>
 </template>
+
 
 <script>
 import axios from 'axios';
