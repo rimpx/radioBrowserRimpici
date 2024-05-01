@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Homepage</h1>
+    <h1>RimpiciRadio</h1>
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
