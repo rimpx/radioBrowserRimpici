@@ -30,7 +30,7 @@
         </v-btn>
       </template>
     </v-data-table>
-    <audio ref="audioPlayer" @ended="stopRadio" style="display:none;"></audio>
+    <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
 
@@ -74,28 +74,26 @@ export default {
       }
     },
     playRadio(url) {
-      const audio = this.$refs.audioPlayer;
+      const video = this.$refs.videoPlayer;
       if (Hls.isSupported()) {
         var hls = new Hls();
         hls.loadSource(url);
-        hls.attachMedia(audio);
+        hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          audio.play();
+          video.play();
         });
         this.currentRadio = url;
-      } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-        audio.src = url;
-        audio.addEventListener('loadedmetadata', () => {
-          audio.play();
-        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.play();
         this.currentRadio = url;
       }
     },
     stopRadio() {
-      const audio = this.$refs.audioPlayer;
-      if (this.currentRadio && audio) {
-        audio.pause();
-        audio.src = ''; // Clear the source to stop downloading
+      const video = this.$refs.videoPlayer;
+      if (this.currentRadio && video) {
+        video.pause();
+        video.src = ''; // Clear the source to stop downloading
         if (Hls.isSupported()) {
           const hls = new Hls();
           hls.detachMedia();
@@ -111,7 +109,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .v-list-item {
   display: block;
@@ -125,4 +122,3 @@ export default {
   width: 100%;
 }
 </style>
-
