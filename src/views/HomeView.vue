@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import Hls from 'hls.js';
+
 export default {
   name: 'HomeView',
   data() {
@@ -65,17 +67,41 @@ export default {
         });
     },
     togglePlay(item) {
-      const audio = this.$refs.audioPlayer;
       if (this.currentRadio === item.url) {
-        audio.pause();
-        this.currentRadio = null;
+        this.stopRadio();
       } else {
-        audio.src = item.url;
-        audio.play();
-        this.currentRadio = item.url;
+        this.playRadio(item.url);
+      }
+    },
+    playRadio(url) {
+      const audio = this.$refs.audioPlayer;
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(audio);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          audio.play();
+        });
+        this.currentRadio = url;
+      } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+        audio.src = url;
+        audio.addEventListener('loadedmetadata', () => {
+          audio.play();
+        });
+        this.currentRadio = url;
       }
     },
     stopRadio() {
+      const audio = this.$refs.audioPlayer;
+      if (this.currentRadio && audio) {
+        audio.pause();
+        audio.src = ''; // Clear the source to stop downloading
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.detachMedia();
+          hls.destroy();
+        }
+      }
       this.currentRadio = null;
     }
   },
@@ -84,6 +110,7 @@ export default {
   },
 }
 </script>
+
 
 <style scoped>
 .v-list-item {
