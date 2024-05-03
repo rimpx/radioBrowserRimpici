@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <h1 class="title">RimpiciRadio</h1>
+    <!-- Wrap title and image in a flex container -->
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+      <img :src="require('@/assets/default-image.jpg')" alt="Logo" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+      <h1 class="title">RimpiciRadio</h1>
+    </div>
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
@@ -37,7 +41,6 @@
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
-
 
 <script>
 import Hls from 'hls.js';
