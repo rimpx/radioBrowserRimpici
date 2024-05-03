@@ -1,10 +1,12 @@
 <template>
   <v-container>
-    <!-- Wrap title and image in a flex container -->
+    <!-- Flex container for the logo and the title -->
     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
       <img :src="require('@/assets/default-image.jpg')" alt="Logo" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
       <h1 class="title">RimpiciRadio</h1>
     </div>
+    
+    <!-- Search field -->
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
@@ -12,6 +14,8 @@
       single-line
       hide-details
     ></v-text-field>
+    
+    <!-- Data table for radio stations -->
     <v-row>
       <v-col cols="12">
         <v-data-table
@@ -21,6 +25,7 @@
           hide-default-footer
           class="elevation-1"
         >
+          <!-- Custom slot for displaying radio station name and favicon -->
           <template v-slot:[`item.name`]="{ item }">
             <div style="display: flex; align-items: center;">
               <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
@@ -28,6 +33,8 @@
               <span>{{ item.name }}</span>
             </div>
           </template>
+          
+          <!-- Custom slot for play/stop button -->
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn icon @click="togglePlay(item)">
               <v-icon>
@@ -38,9 +45,12 @@
         </v-data-table>
       </v-col>
     </v-row>
+    
+    <!-- Hidden video player for playing the radio stream -->
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
+
 
 <script>
 import Hls from 'hls.js';
