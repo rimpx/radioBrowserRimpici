@@ -9,18 +9,7 @@
       hide-details
     ></v-text-field>
     <v-row>
-      <v-col cols="3">
-        <v-list dense>
-          <v-list-item-group>
-            <v-list-item v-for="item in radios" :key="item.id">
-              <v-list-item-avatar>
-                <img :src="item.favicon || 'default-image.jpg'"> <!-- Placeholder if no favicon -->
-              </v-list-item-avatar>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-col>
-      <v-col cols="9">
+      <v-col cols="12">
         <v-data-table
           :headers="headers"
           :items="radios"
@@ -29,11 +18,10 @@
           class="elevation-1"
         >
           <template v-slot:[`item.name`]="{ item }">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            <div style="display: flex; align-items: center;">
+              <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+              <span>{{ item.name }}</span>
+            </div>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn icon @click="togglePlay(item)">
@@ -136,15 +124,16 @@ export default {
   width: 100%;
 }
 
-.v-list-item-avatar img {
-  height: 10px;   
-  width: 10px;    
-  object-fit: cover;  
-  border-radius: 50%; 
-}
-
 .v-col {
   padding: 0; 
+}
+
+/* Additional style for images to ensure they fit well within the layout */
+img.radio-icon {
+  width: 40px;  /* Adjust width as needed */
+  height: 40px; /* Adjust height to match width for a square appearance */
+  object-fit: cover; /* Keeps the image ratio intact */
+  border-radius: 50%; /* Optional: makes the image round */
 }
 </style>
 
