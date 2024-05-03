@@ -54,7 +54,6 @@
 
 <script>
 import Hls from 'hls.js';
-
 import defaultImage from '@/assets/default-image.jpg';
 
 export default {
@@ -95,18 +94,23 @@ export default {
     },
     playRadio(item) {
       const video = this.$refs.videoPlayer;
-      if (Hls.isSupported()) {
-        if (this.currentHlsInstance) {
-          this.currentHlsInstance.destroy();
-        }
-        const hls = new Hls();
-        hls.loadSource(item.url);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      if (item.url.endsWith('.m3u8')) {
+        if (Hls.isSupported()) {
+          if (this.currentHlsInstance) {
+            this.currentHlsInstance.destroy();
+          }
+          const hls = new Hls();
+          hls.loadSource(item.url);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play();
+          });
+          this.currentHlsInstance = hls;
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = item.url;
           video.play();
-        });
-        this.currentHlsInstance = hls;
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        }
+      } else {
         video.src = item.url;
         video.play();
       }
@@ -129,6 +133,7 @@ export default {
   },
 }
 </script>
+
 
 
 <style scoped>
