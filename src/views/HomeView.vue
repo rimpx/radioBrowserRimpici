@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>RimpiciRadio</h1>
+    <h1 class="title">RimpiciRadio</h1>
     <v-text-field
       v-model="search"
       append-icon="mdi-magnify"
@@ -20,6 +20,7 @@
           <template v-slot:[`item.name`]="{ item }">
             <div style="display: flex; align-items: center;">
               <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+              <v-icon small class="mr-2">mdi-radio</v-icon>
               <span>{{ item.name }}</span>
             </div>
           </template>
@@ -128,13 +129,24 @@ export default {
   padding: 0; 
 }
 
-/* Additional style for images to ensure they fit well within the layout */
 img.radio-icon {
-  width: 40px;  /* Adjust width as needed */
-  height: 40px; /* Adjust height to match width for a square appearance */
-  object-fit: cover; /* Keeps the image ratio intact */
-  border-radius: 50%; /* Optional: makes the image round */
+  width: 40px;  
+  height: 40px; 
+  object-fit: cover; 
+  border-radius: 50%; 
+}
+
+.title {
+  font-family: 'Roboto', sans-serif; /* Example: Roboto. You can change it as needed */
+  color: #1976D2; /* Deep blue, change as desired */
+  font-size: 2em; /* Larger font size */
+  font-weight: bold; /* Bold font weight */
+}
+
+.mr-2 {
+  margin-right: 8px; /* Margin right for the icon */
 }
 </style>
+
 
 
