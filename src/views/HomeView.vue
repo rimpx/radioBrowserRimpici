@@ -8,31 +8,47 @@
       single-line
       hide-details
     ></v-text-field>
-    <v-data-table
-      :headers="headers"
-      :items="radios"
-      :search="search"
-      hide-default-footer
-      class="elevation-1"
-    >
-      <template v-slot:[`item.name`]="{ item }">
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn icon @click="togglePlay(item)">
-          <v-icon>
-            {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
-          </v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
+    <v-row>
+      <v-col cols="3">
+        <v-list dense>
+          <v-list-item-group>
+            <v-list-item v-for="item in radios" :key="item.id">
+              <v-list-item-avatar>
+                <img :src="item.favicon || 'default-image.jpg'"> <!-- Placeholder if no favicon -->
+              </v-list-item-avatar>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-col>
+      <v-col cols="9">
+        <v-data-table
+          :headers="headers"
+          :items="radios"
+          :search="search"
+          hide-default-footer
+          class="elevation-1"
+        >
+          <template v-slot:[`item.name`]="{ item }">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn icon @click="togglePlay(item)">
+              <v-icon>
+                {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
+              </v-icon>
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
+
 
 <script>
 import Hls from 'hls.js';
@@ -52,20 +68,18 @@ export default {
   },
   methods: {
     getRadios() {
-      fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          this.radios = data;
-        })
-        .catch(error => {
-          console.error('Error fetching radios:', error);
-        });
-    },
+  fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
+    .then(response => response.json())
+    .then(data => {
+      this.radios = data.map(station => ({
+        ...station,
+        favicon: station.favicon || 'default-image.jpg' // Use a default image if none is provided
+      }));
+    })
+    .catch(error => {
+      console.error('Error fetching radios:', error);
+    });
+},
     togglePlay(item) {
       if (this.currentRadio === item.url) {
         this.stopRadio();
