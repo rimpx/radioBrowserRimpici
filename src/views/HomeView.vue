@@ -135,4 +135,15 @@ export default {
 .v-list {
   width: 100%;
 }
+
+.v-list-item-avatar img {
+  height: 50px;  
+  width: 50px;   
+  object-fit: cover; 
+}
+
+.v-col {
+  padding: 0; 
+}
 </style>
+
