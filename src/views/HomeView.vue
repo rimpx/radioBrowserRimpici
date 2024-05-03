@@ -54,60 +54,62 @@ export default {
       radios: [],
       search: '',
       currentRadio: null,
+      currentHlsInstance: null,  // Conserva l'istanza Hls per la gestione
       headers: [
         { text: 'Radio Station', align: 'start', sortable: false, value: 'name' },
         { text: 'Actions', align: 'end', sortable: false, value: 'actions' }
       ],
-      defaultImage // Aggiungi l'immagine importata ai dati del componente
+      defaultImage
     }
   },
   methods: {
     getRadios() {
       fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
-      .then(response => response.json())
-      .then(data => {
-        this.radios = data.map(station => ({
-          ...station,
-          favicon: station.favicon || this.defaultImage // Utilizza l'immagine importata come fallback
-        }));
-      })
-      .catch(error => {
-        console.error('Error fetching radios:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          this.radios = data.map(station => ({
+            ...station,
+            favicon: station.favicon || this.defaultImage
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching radios:', error);
+        });
     },
     togglePlay(item) {
       if (this.currentRadio === item.url) {
         this.stopRadio();
       } else {
-        this.playRadio(item.url);
+        this.playRadio(item);
       }
     },
-    playRadio(url) {
+    playRadio(item) {
       const video = this.$refs.videoPlayer;
       if (Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource(url);
+        if (this.currentHlsInstance) {
+          this.currentHlsInstance.destroy();
+        }
+        const hls = new Hls();
+        hls.loadSource(item.url);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           video.play();
         });
-        this.currentRadio = url;
+        this.currentHlsInstance = hls;
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
+        video.src = item.url;
         video.play();
-        this.currentRadio = url;
       }
+      this.currentRadio = item.url;
     },
     stopRadio() {
       const video = this.$refs.videoPlayer;
-      if (this.currentRadio && video) {
-        video.pause();
-        video.src = ''; // Clear the source to stop downloading
-        if (Hls.isSupported()) {
-          const hls = new Hls();
-          hls.detachMedia();
-          hls.destroy();
-        }
+      video.pause();
+      video.src = ''; // Clear the source to stop downloading
+      if (this.currentHlsInstance) {
+        this.currentHlsInstance.detachMedia();
+        this.currentHlsInstance.destroy();
+        this.currentHlsInstance = null;
       }
       this.currentRadio = null;
     }
@@ -117,6 +119,7 @@ export default {
   },
 }
 </script>
+
 
 <style scoped>
 .v-list-item {
