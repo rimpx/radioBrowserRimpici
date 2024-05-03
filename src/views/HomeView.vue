@@ -41,6 +41,8 @@
 
 <script>
 import Hls from 'hls.js';
+// Importa l'immagine da assets
+import defaultImage from '@/assets/default-image.jpg';
 
 export default {
   name: 'HomeView',
@@ -52,23 +54,24 @@ export default {
       headers: [
         { text: 'Radio Station', align: 'start', sortable: false, value: 'name' },
         { text: 'Actions', align: 'end', sortable: false, value: 'actions' }
-      ]
+      ],
+      defaultImage // Aggiungi l'immagine importata ai dati del componente
     }
   },
   methods: {
     getRadios() {
-  fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
-    .then(response => response.json())
-    .then(data => {
-      this.radios = data.map(station => ({
-        ...station,
-        favicon: station.favicon || 'default-image.jpg' // Use a default image if none is provided
-      }));
-    })
-    .catch(error => {
-      console.error('Error fetching radios:', error);
-    });
-},
+      fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
+      .then(response => response.json())
+      .then(data => {
+        this.radios = data.map(station => ({
+          ...station,
+          favicon: station.favicon || this.defaultImage // Utilizza l'immagine importata come fallback
+        }));
+      })
+      .catch(error => {
+        console.error('Error fetching radios:', error);
+      });
+    },
     togglePlay(item) {
       if (this.currentRadio === item.url) {
         this.stopRadio();
