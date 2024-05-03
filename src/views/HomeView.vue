@@ -137,13 +137,15 @@ export default {
 }
 
 .v-list-item-avatar img {
-  height: 50px;  
-  width: 50px;   
-  object-fit: cover; 
+  height: 10px;   
+  width: 10px;    
+  object-fit: cover;  
+  border-radius: 50%; 
 }
 
 .v-col {
   padding: 0; 
 }
 </style>
+
 
