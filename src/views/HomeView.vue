@@ -41,7 +41,7 @@
 
 <script>
 import Hls from 'hls.js';
-// Importa l'immagine da assets
+
 import defaultImage from '@/assets/default-image.jpg';
 
 export default {
