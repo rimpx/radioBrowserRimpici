@@ -36,14 +36,49 @@
                 {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
               </v-icon>
             </v-btn>
+            <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
+              <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+            </v-btn>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
     
+    <v-row>
+      <v-col cols="12">
+        <h2>Preferiti</h2>
+        <v-data-table
+          :headers="headers"
+          :items="favorites"
+          :search="search"
+          hide-default-footer
+          class="elevation-1"
+        >
+          <template v-slot:[`item.name`]="{ item }">
+            <div style="display: flex; align-items: center;">
+              <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+              <v-icon small class="mr-2">mdi-radio</v-icon>
+              <span>{{ item.name }}</span>
+            </div>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn icon @click="togglePlay(item)">
+              <v-icon>
+                {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
+              </v-icon>
+            </v-btn>
+            <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
+              <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
+
 
 
 <script>
@@ -55,9 +90,10 @@ export default {
   data() {
     return {
       radios: [],
+      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
       search: '',
       currentRadio: null,
-      currentHlsInstance: null,  
+      currentHlsInstance: null,
       headers: [
         { text: 'Radio Station', align: 'start', sortable: false, value: 'name' },
         { text: 'Actions', align: 'end', sortable: false, value: 'actions' }
@@ -78,6 +114,18 @@ export default {
         .catch(error => {
           console.error('Error fetching radios:', error);
         });
+    },
+    toggleFavorite(item) {
+      const index = this.favorites.findIndex(fav => fav.id === item.id);
+      if (index !== -1) {
+        this.favorites.splice(index, 1);
+      } else {
+        this.favorites.push(item);
+      }
+      localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    },
+    isFavorite(item) {
+      return this.favorites.some(fav => fav.id === item.id);
     },
     togglePlay(item) {
       if (this.currentRadio === item.url) {
@@ -113,7 +161,7 @@ export default {
     stopRadio() {
       const video = this.$refs.videoPlayer;
       video.pause();
-      video.src = ''; 
+      video.src = '';
       if (this.currentHlsInstance) {
         this.currentHlsInstance.detachMedia();
         this.currentHlsInstance.destroy();
@@ -127,6 +175,7 @@ export default {
   },
 }
 </script>
+
 
 
 
