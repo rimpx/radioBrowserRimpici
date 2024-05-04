@@ -44,7 +44,7 @@
       </v-col>
     </v-row>
     
-    <v-btn @click="$router.push('/favorites')">Vedi Preferiti</v-btn>
+    <v-btn @click="$router.push('/FavouriteView')">Vedi Preferiti</v-btn>
 
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
