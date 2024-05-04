@@ -32,11 +32,11 @@ export default {
     }
   },
   watch: {
-    '$route': function(to, from) {
-      // Questo metodo viene chiamato ogni volta che cambia la route
-      this.loadFavorites();
-    }
+  '$route'() {
+    this.loadFavorites();
   }
+}
+
 }
 </script>
 

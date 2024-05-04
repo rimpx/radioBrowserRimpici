@@ -94,8 +94,11 @@ export default {
       } else {
         this.favorites.push(item);
       }
+      this.updateLocalStorageFavorites();
+    },
+    updateLocalStorageFavorites() {
       localStorage.setItem('favorites', JSON.stringify(this.favorites));
-      this.$forceUpdate(); // Forza Vue a riconoscere l'aggiornamento
+      this.favorites = [...this.favorites]; // Refresh the favorites array to maintain reactivity
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
@@ -148,6 +151,7 @@ export default {
   },
 }
 </script>
+
 
 
 
