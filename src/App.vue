@@ -1,6 +1,7 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link>
+    <router-link to="/" exact>Home</router-link>
+    <!-- Aggiungi altri router-link se necessario -->
   </nav>
   <router-view/>
 </template>
@@ -16,14 +17,24 @@
 
 nav {
   padding: 30px;
+  display: flex;
+  justify-content: center; /* Centra i link orizzontalmente */
+  gap: 20px; /* Distanza tra i link */
 }
 
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none; /* Rimuove il sottolineato */
+  padding: 10px;
+}
+
+nav a:hover {
+  color: #3498db; /* Cambia colore al passaggio del mouse */
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+
