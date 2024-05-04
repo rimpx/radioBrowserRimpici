@@ -44,40 +44,12 @@
       </v-col>
     </v-row>
     
-    <v-row>
-      <v-col cols="12">
-        <h2>Preferiti</h2>
-        <v-data-table
-          :headers="headers"
-          :items="favorites"
-          :search="search"
-          hide-default-footer
-          class="elevation-1"
-        >
-          <template v-slot:[`item.name`]="{ item }">
-            <div style="display: flex; align-items: center;">
-              <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
-              <v-icon small class="mr-2">mdi-radio</v-icon>
-              <span>{{ item.name }}</span>
-            </div>
-          </template>
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-btn icon @click="togglePlay(item)">
-              <v-icon>
-                {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
-              </v-icon>
-            </v-btn>
-            <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
-              <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-row>
+    <v-btn @click="$router.push('/favorites')">Vedi Preferiti</v-btn>
 
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
+
 
 
 
@@ -123,6 +95,7 @@ export default {
         this.favorites.push(item);
       }
       localStorage.setItem('favorites', JSON.stringify(this.favorites));
+      this.$forceUpdate(); // Forza Vue a riconoscere l'aggiornamento
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
@@ -175,6 +148,7 @@ export default {
   },
 }
 </script>
+
 
 
 
