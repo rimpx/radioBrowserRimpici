@@ -16,12 +16,27 @@ export default {
   name: 'FavoritesView',
   data() {
     return {
-      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+      favorites: [],
       headers: [
         { text: 'Radio Station', value: 'name' },
         { text: 'Actions', value: 'actions' }
       ]
     };
+  },
+  created() {
+    this.loadFavorites();
+  },
+  methods: {
+    loadFavorites() {
+      this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    }
+  },
+  watch: {
+    '$route': function(to, from) {
+      // Questo metodo viene chiamato ogni volta che cambia la route
+      this.loadFavorites();
+    }
   }
 }
 </script>
+
