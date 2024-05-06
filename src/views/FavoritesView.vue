@@ -6,10 +6,18 @@
       :items="favorites"
       hide-default-footer
     >
-      <!-- Template per item e actions simili a HomeView -->
+      <template v-slot:item.actions="{ item }">
+        <v-btn icon @click="toggleFavorite(item)">
+          <v-icon>mdi-heart-broken</v-icon>
+        </v-btn>
+        <v-btn icon @click="playRadio(item)">
+          <v-icon>mdi-play</v-icon>
+        </v-btn>
+      </template>
     </v-data-table>
   </v-container>
 </template>
+
 
 <script>
 export default {
@@ -29,14 +37,31 @@ export default {
   methods: {
     loadFavorites() {
       this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    },
+    toggleFavorite(item) {
+      const index = this.favorites.findIndex(fav => fav.id === item.id);
+      if (index !== -1) {
+        this.favorites.splice(index, 1);
+      }
+      this.saveFavorites();
+    },
+    saveFavorites() {
+      localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    },
+    playRadio(item) {
+      const video = this.$refs.videoPlayer; // Assumi l'esistenza di un ref `videoPlayer` nel componente
+      if (item.url) {
+        video.src = item.url;
+        video.play();
+      }
     }
   },
   watch: {
-  '$route'() {
-    this.loadFavorites();
+    '$route'() {
+      this.loadFavorites();
+    }
   }
 }
-
-}
 </script>
+
 

@@ -152,11 +152,6 @@ export default {
 }
 </script>
 
-
-
-
-
-
 <style scoped>
 .v-list-item {
   display: block;
