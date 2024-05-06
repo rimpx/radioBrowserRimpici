@@ -1,35 +1,28 @@
 <template>
   <v-container>
     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-      <img :src="require('@/assets/default-image.jpg')" alt="Logo" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+      <img :src="require('@/assets/default-image.jpg')" alt="Logo"
+        style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
       <h1 class="title">RimpiciRadio</h1>
     </div>
 
-    <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      label="Search Radio Stations"
-      single-line
-      hide-details
-    ></v-text-field>
-    
+    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Radio Stations" single-line
+      hide-details></v-text-field>
+
     <v-row>
       <v-col cols="12">
-        <v-data-table
-          :headers="headers"
-          :items="radios"
-          :search="search"
-          hide-default-footer
-          class="elevation-1"
-        >
+        <v-data-table :headers="headers" :items="radios" :search="search" hide-default-footer class="elevation-1"
+          :key="updateKey">
+
           <template v-slot:[`item.name`]="{ item }">
             <div style="display: flex; align-items: center;">
-              <img :src="item.favicon || 'default-image.jpg'" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+              <img :src="item.favicon || 'default-image.jpg'"
+                style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
               <v-icon small class="mr-2">mdi-radio</v-icon>
               <span>{{ item.name }}</span>
             </div>
           </template>
-          
+
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn icon @click="togglePlay(item)">
               <v-icon>
@@ -43,7 +36,7 @@
         </v-data-table>
       </v-col>
     </v-row>
-    
+
     <v-btn @click="$router.push('/favorites')">Vedi Preferiti</v-btn>
 
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
@@ -61,6 +54,7 @@ export default {
   name: 'HomeView',
   data() {
     return {
+      updateKey: 0,
       radios: [],
       favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
       search: '',
@@ -98,11 +92,13 @@ export default {
     },
     updateLocalStorageFavorites() {
       localStorage.setItem('favorites', JSON.stringify(this.favorites));
-      this.favorites = [...this.favorites]; // Refresh the favorites array to maintain reactivity
+      this.favorites = [...this.favorites];
+      this.updateKey++; // Incrementa la chiave per forzare l'aggiornamento
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
-    },
+    }
+    ,
     togglePlay(item) {
       if (this.currentRadio === item.url) {
         this.stopRadio();
@@ -166,27 +162,29 @@ export default {
 }
 
 .v-col {
-  padding: 0; 
+  padding: 0;
 }
 
 img.radio-icon {
-  width: 40px;  
-  height: 40px; 
-  object-fit: cover; 
-  border-radius: 50%; 
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .title {
-  font-family: 'Roboto', sans-serif; /* Example: Roboto. You can change it as needed */
-  color: #1976D2; /* Deep blue, change as desired */
-  font-size: 2em; /* Larger font size */
-  font-weight: bold; /* Bold font weight */
+  font-family: 'Roboto', sans-serif;
+  /* Example: Roboto. You can change it as needed */
+  color: #1976D2;
+  /* Deep blue, change as desired */
+  font-size: 2em;
+  /* Larger font size */
+  font-weight: bold;
+  /* Bold font weight */
 }
 
 .mr-2 {
-  margin-right: 8px; /* Margin right for the icon */
+  margin-right: 8px;
+  /* Margin right for the icon */
 }
 </style>
-
-
-

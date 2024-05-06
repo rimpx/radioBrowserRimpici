@@ -8,26 +8,31 @@
       hide-default-footer
       class="elevation-1"
     >
-      <template v-slot:item.name="{ item }">
-        <div style="display: flex; align-items: center;">
-          <img :src="item.favicon || defaultImage" alt="favicon" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
-          <span>{{ item.name }}</span>
-        </div>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-btn icon @click="togglePlay(item)">
-          <v-icon>
-            {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
-          </v-icon>
-        </v-btn>
-        <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
-          <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-        </v-btn>
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>
+            <div style="display: flex; align-items: center;">
+              <img :src="item.favicon || defaultImage" alt="favicon" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+              <span>{{ item.name }}</span>
+            </div>
+          </td>
+          <td>
+            <v-btn icon @click="togglePlay(item)">
+              <v-icon>
+                {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
+              </v-icon>
+            </v-btn>
+            <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
+              <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+            </v-btn>
+          </td>
+        </tr>
       </template>
     </v-data-table>
     <video ref="videoPlayer" @ended="stopRadio" style="display: none;"></video>
   </v-container>
 </template>
+
 
 
 
