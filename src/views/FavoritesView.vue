@@ -2,19 +2,25 @@
   <v-container>
     <h1>Preferiti</h1>
     <v-data-table
-      :headers="headers"
-      :items="favorites"
-      hide-default-footer
-    >
-      <template v-slot:item.actions="{ item }">
+  :headers="headers"
+  :items="favorites"
+  hide-default-footer
+>
+  <template v-slot:item="{ item }">
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>
         <v-btn icon @click="toggleFavorite(item)">
           <v-icon>mdi-heart-broken</v-icon>
         </v-btn>
         <v-btn icon @click="playRadio(item)">
           <v-icon>mdi-play</v-icon>
         </v-btn>
-      </template>
-    </v-data-table>
+      </td>
+    </tr>
+  </template>
+</v-data-table>
+
   </v-container>
 </template>
 
