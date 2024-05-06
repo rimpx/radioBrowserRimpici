@@ -72,8 +72,9 @@ export default {
       fetch('https://nl1.api.radio-browser.info/json/stations/search?limit=100&countrycode=IT&hidebroken=true&order=clickcount&reverse=true')
         .then(response => response.json())
         .then(data => {
-          this.radios = data.map(station => ({
+          this.radios = data.map((station, index) => ({
             ...station,
+            id: station.id || `station-${index}`, // Assicurati che ogni stazione abbia un ID univoco
             favicon: station.favicon || this.defaultImage
           }));
         })
@@ -97,8 +98,7 @@ export default {
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
-    }
-    ,
+    },
     togglePlay(item) {
       if (this.currentRadio === item.url) {
         this.stopRadio();
