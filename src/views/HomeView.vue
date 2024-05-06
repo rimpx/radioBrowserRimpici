@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-      <img :src="require('@/assets/default-image.jpg')" alt="Logo"
-        style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+      <img :src="require('@/assets/default-image.jpg')" alt="Logo" class="logo-image"
+        style="border-radius: 50%; margin-right: 16px;">
       <h1 class="title">RimpiciRadio</h1>
     </div>
 
@@ -177,7 +177,7 @@ img.radio-icon {
   /* Example: Roboto. You can change it as needed */
   color: #1976D2;
   /* Deep blue, change as desired */
-  font-size: 2em;
+  font-size: 5em;
   /* Larger font size */
   font-weight: bold;
   /* Bold font weight */
@@ -188,5 +188,11 @@ img.radio-icon {
   /* Margin right for the icon */
 }
 
+.logo-image {
+  width: 5em; /* Larghezza corrispondente al titolo */
+  height: 5em; /* Altezza corrispondente al titolo */
+  object-fit: cover; /* Mantiene le proporzioni dell'immagine */
+  border-radius: 50%; /* Mantiene il bordo rotondo */
+}
 
 </style>
