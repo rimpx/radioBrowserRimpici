@@ -195,5 +195,3 @@ export default {
   margin-right: 8px; /* Spazio a destra per gli icon */
 }
 </style>
-
-
