@@ -10,7 +10,7 @@
       hide-details></v-text-field>
 
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" sm="12" md="10" lg="8" xl="6" offset-md="1" offset-lg="2" offset-xl="3">
         <v-data-table :headers="headers" :items="radios" :search="search" hide-default-footer class="elevation-1">
 
           <template v-slot:[`item.name`]="{ item }">
@@ -73,7 +73,7 @@ export default {
         .then(data => {
           this.radios = data.map((station, index) => ({
             ...station,
-            id: station.id || `station-${index}`, 
+            id: station.id || `station-${index}`,
             favicon: station.favicon || this.defaultImage
           }));
         })
@@ -148,6 +148,32 @@ export default {
 </script>
 
 <style scoped>
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2em; /* Ridimensiona il titolo per schermi piccoli */
+  }
+  .logo-image, img.radio-icon {
+    width: 2em; /* Ridimensiona le immagini per schermi piccoli */
+    height: 2em;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 960px) {
+  .title {
+    font-size: 3em; /* Dimensione intermedia per tablet */
+  }
+  .logo-image, img.radio-icon {
+    width: 3em;
+    height: 3em;
+  }
+}
+
+.v-btn {
+  min-width: 48px; /* Dimensione minima per accessibilità touch */
+  padding: 12px;
+}
+
 .v-list-item {
   display: block;
 }
@@ -188,10 +214,13 @@ img.radio-icon {
 }
 
 .logo-image {
-  width: 4em; /* Larghezza corrispondente al titolo */
-  height: 4em; /* Altezza corrispondente al titolo */
-  object-fit: cover; /* Mantiene le proporzioni dell'immagine */
-  border-radius: 50%; /* Mantiene il bordo rotondo */
+  width: 4em;
+  /* Larghezza corrispondente al titolo */
+  height: 4em;
+  /* Altezza corrispondente al titolo */
+  object-fit: cover;
+  /* Mantiene le proporzioni dell'immagine */
+  border-radius: 50%;
+  /* Mantiene il bordo rotondo */
 }
-
 </style>
