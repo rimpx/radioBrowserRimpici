@@ -148,37 +148,29 @@ export default {
 </script>
 
 <style scoped>
-/* Stile di base per il titolo e l'immagine del logo */
+/* Stile base per il titolo e l'immagine del logo che non cambia tra i dispositivi */
 .title {
   font-family: 'Roboto', sans-serif; /* Font Roboto */
   color: #1976D2; /* Colore blu profondo */
   font-weight: bold; /* Testo in grassetto */
+  font-size: 4em; /* Dimensione grande per desktop */
 }
 
 .logo-image {
+  width: 4em; /* Dimensione del logo proporzionale al titolo */
+  height: 4em;
   object-fit: cover; /* Mantiene le proporzioni dell'immagine */
   border-radius: 50%; /* Rende l'immagine rotonda */
 }
 
-/* Media queries per adattare la dimensione del testo e dell'immagine su diversi dispositivi */
-@media (min-width: 961px) {
-  /* Impostazioni per desktop e schermi larghi */
-  .title {
-    font-size: 4em; /* Grande per una buona leggibilità su schermi larghi */
-  }
-  .logo-image {
-    width: 4em; /* Dimensione del logo proporzionale al titolo */
-    height: 4em;
-  }
-}
-
+/* Regole specifiche per schermi di dimensioni inferiori usando media queries */
 @media (max-width: 960px) {
   /* Impostazioni per tablet e schermi di dimensioni medie */
   .title {
-    font-size: 3em; /* Leggermente più piccolo per adattarsi a schermi medi */
+    font-size: 3em; /* Dimensione ridotta del titolo per schermi medi */
   }
   .logo-image {
-    width: 3em;
+    width: 3em; /* Dimensione ridotta dell'immagine per schermi medi */
     height: 3em;
   }
 }
@@ -186,21 +178,22 @@ export default {
 @media (max-width: 600px) {
   /* Impostazioni per smartphone e schermi piccoli */
   .title {
-    font-size: 2em; /* Più piccolo per adattarsi meglio a schermi stretti */
+    font-size: 2em; /* Ulteriore riduzione per adattarsi a schermi stretti */
   }
   .logo-image {
-    width: 2em;
+    width: 2em; /* Riduzione della dimensione dell'immagine per schermi stretti */
     height: 2em;
   }
 }
 
 /* Stili aggiuntivi per migliorare la disposizione e la spaziatura */
 .v-col {
-  padding: 0; /* Rimuove il padding predefinito per i colonne */
+  padding: 0; /* Rimuove il padding predefinito per le colonne */
 }
 
 .mr-2 {
   margin-right: 8px; /* Spazio a destra per gli icon */
 }
 </style>
+
 
