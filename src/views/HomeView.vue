@@ -11,8 +11,7 @@
 
     <v-row>
       <v-col cols="12">
-        <v-data-table :headers="headers" :items="radios" :search="search" hide-default-footer class="elevation-1"
-          :key="updateKey">
+        <v-data-table :headers="headers" :items="radios" :search="search" hide-default-footer class="elevation-1">
 
           <template v-slot:[`item.name`]="{ item }">
             <div style="display: flex; align-items: center;">
@@ -74,7 +73,7 @@ export default {
         .then(data => {
           this.radios = data.map((station, index) => ({
             ...station,
-            id: station.id || `station-${index}`, // Assicurati che ogni stazione abbia un ID univoco
+            id: station.id || `station-${index}`, 
             favicon: station.favicon || this.defaultImage
           }));
         })
@@ -94,7 +93,7 @@ export default {
     updateLocalStorageFavorites() {
       localStorage.setItem('favorites', JSON.stringify(this.favorites));
       this.favorites = [...this.favorites];
-      this.updateKey++; // Incrementa la chiave per forzare l'aggiornamento
+      //this.updateKey++; // Incrementa la chiave per forzare l'aggiornamento
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
@@ -177,7 +176,7 @@ img.radio-icon {
   /* Example: Roboto. You can change it as needed */
   color: #1976D2;
   /* Deep blue, change as desired */
-  font-size: 5em;
+  font-size: 4em;
   /* Larger font size */
   font-weight: bold;
   /* Bold font weight */
@@ -189,8 +188,8 @@ img.radio-icon {
 }
 
 .logo-image {
-  width: 5em; /* Larghezza corrispondente al titolo */
-  height: 5em; /* Altezza corrispondente al titolo */
+  width: 4em; /* Larghezza corrispondente al titolo */
+  height: 4em; /* Altezza corrispondente al titolo */
   object-fit: cover; /* Mantiene le proporzioni dell'immagine */
   border-radius: 50%; /* Mantiene il bordo rotondo */
 }

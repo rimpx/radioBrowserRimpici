@@ -1,6 +1,7 @@
 <template>
   <nav>
     <router-link to="/" exact>Home</router-link>
+    <router-link to="/favorites" exact>Favourites</router-link>
     <!-- Aggiungi altri router-link se necessario -->
   </nav>
   <router-view/>
@@ -16,7 +17,7 @@
 }
 
 nav {
-  padding: 30px;
+  padding: 10px;
   display: flex;
   justify-content: center; /* Centra i link orizzontalmente */
   gap: 20px; /* Distanza tra i link */
