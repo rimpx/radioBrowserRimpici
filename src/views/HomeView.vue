@@ -148,79 +148,59 @@ export default {
 </script>
 
 <style scoped>
+/* Stile di base per il titolo e l'immagine del logo */
+.title {
+  font-family: 'Roboto', sans-serif; /* Font Roboto */
+  color: #1976D2; /* Colore blu profondo */
+  font-weight: bold; /* Testo in grassetto */
+}
 
-@media (max-width: 600px) {
+.logo-image {
+  object-fit: cover; /* Mantiene le proporzioni dell'immagine */
+  border-radius: 50%; /* Rende l'immagine rotonda */
+}
+
+/* Media queries per adattare la dimensione del testo e dell'immagine su diversi dispositivi */
+@media (min-width: 961px) {
+  /* Impostazioni per desktop e schermi larghi */
   .title {
-    font-size: 2em; /* Ridimensiona il titolo per schermi piccoli */
+    font-size: 4em; /* Grande per una buona leggibilità su schermi larghi */
   }
-  .logo-image, img.radio-icon {
-    width: 2em; /* Ridimensiona le immagini per schermi piccoli */
-    height: 2em;
+  .logo-image {
+    width: 4em; /* Dimensione del logo proporzionale al titolo */
+    height: 4em;
   }
 }
 
-@media (min-width: 601px) and (max-width: 960px) {
+@media (max-width: 960px) {
+  /* Impostazioni per tablet e schermi di dimensioni medie */
   .title {
-    font-size: 3em; /* Dimensione intermedia per tablet */
+    font-size: 3em; /* Leggermente più piccolo per adattarsi a schermi medi */
   }
-  .logo-image, img.radio-icon {
+  .logo-image {
     width: 3em;
     height: 3em;
   }
 }
 
-.v-btn {
-  min-width: 48px; /* Dimensione minima per accessibilità touch */
-  padding: 12px;
+@media (max-width: 600px) {
+  /* Impostazioni per smartphone e schermi piccoli */
+  .title {
+    font-size: 2em; /* Più piccolo per adattarsi meglio a schermi stretti */
+  }
+  .logo-image {
+    width: 2em;
+    height: 2em;
+  }
 }
 
-.v-list-item {
-  display: block;
-}
-
-.v-container {
-  max-width: 100%;
-}
-
-.v-list {
-  width: 100%;
-}
-
+/* Stili aggiuntivi per migliorare la disposizione e la spaziatura */
 .v-col {
-  padding: 0;
-}
-
-img.radio-icon {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.title {
-  font-family: 'Roboto', sans-serif;
-  /* Example: Roboto. You can change it as needed */
-  color: #1976D2;
-  /* Deep blue, change as desired */
-  font-size: 4em;
-  /* Larger font size */
-  font-weight: bold;
-  /* Bold font weight */
+  padding: 0; /* Rimuove il padding predefinito per i colonne */
 }
 
 .mr-2 {
-  margin-right: 8px;
-  /* Margin right for the icon */
-}
-
-.logo-image {
-  width: 4em;
-  /* Larghezza corrispondente al titolo */
-  height: 4em;
-  /* Altezza corrispondente al titolo */
-  object-fit: cover;
-  /* Mantiene le proporzioni dell'immagine */
-  border-radius: 50%;
-  /* Mantiene il bordo rotondo */
+  margin-right: 8px; /* Spazio a destra per gli icon */
 }
 </style>
+
