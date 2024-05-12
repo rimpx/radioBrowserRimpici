@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import FavoritesView from '../views/FavoritesView.vue'  // Assicurati di importare la vista dei preferiti
+import FavoritesView from '../views/FavoritesView.vue'
+import PlanetView from '../views/PlanetView.vue'  
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -13,7 +14,12 @@ const router = createRouter({
     {
       path: '/favorites',
       name: 'Favorites',
-      component: FavoritesView  // Aggiungi la route per i preferiti
+      component: FavoritesView
+    },
+    {
+      path: '/planet',  // Definisci il percorso per la nuova vista
+      name: 'Planet',
+      component: PlanetView  // Assegna il componente PlanetView a questo percorso
     }
   ]
 })

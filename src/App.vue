@@ -2,7 +2,7 @@
   <nav>
     <router-link to="/" exact>Home</router-link>
     <router-link to="/favorites" exact>Favourites</router-link>
-    <!-- Aggiungi altri router-link se necessario -->
+    <router-link to="/planet" exact>Planet</router-link> 
   </nav>
   <router-view/>
 </template>
@@ -35,7 +35,6 @@ nav a:hover {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #42b983; /* Colore per il link attivo */
 }
 </style>
-
