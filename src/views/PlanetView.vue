@@ -122,8 +122,16 @@ export default {
                 this.playRadio(this.selectedRadio);
             }
         },
-
         playRadio(radio) {
+           
+            if (this.selectedRadio && this.selectedRadio !== radio && this.selectedRadio.audioPlayer) {
+                this.selectedRadio.audioPlayer.pause();
+                this.selectedRadio.playing = false;
+            }
+
+            // Imposta la radio selezionata come la corrente
+            this.selectedRadio = radio;
+
             // Se l'audio player non esiste, lo crea
             if (!radio.audioPlayer) {
                 radio.audioPlayer = new Audio(radio.url);
@@ -147,20 +155,19 @@ export default {
                         console.error("Error resuming the radio:", error);
                     });
             }
-            this.selectedRadio = radio; // Imposta la radio selezionata come la corrente
         },
         togglePlayPause(radio) {
+            // Se la radio selezionata è già in riproduzione, la ferma
             if (radio.playing) {
-                if (radio.audioPlayer) {
-                    radio.audioPlayer.pause();
-                }
+                radio.audioPlayer.pause();
                 radio.playing = false;
             } else {
-                // Fermiamo qualsiasi altra stazione radio che potrebbe essere in riproduzione.
+                // Ferma qualsiasi altra stazione radio che potrebbe essere in riproduzione
                 if (this.selectedRadio && this.selectedRadio !== radio && this.selectedRadio.audioPlayer) {
                     this.selectedRadio.audioPlayer.pause();
                     this.selectedRadio.playing = false;
                 }
+                // Avvia la riproduzione della radio selezionata
                 this.playRadio(radio);
             }
         },
