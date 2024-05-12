@@ -148,50 +148,50 @@ export default {
 </script>
 
 <style scoped>
-/* Stile base per il titolo e l'immagine del logo che non cambia tra i dispositivi */
+
 .title {
-  font-family: 'Roboto', sans-serif; /* Font Roboto */
-  color: #1976D2; /* Colore blu profondo */
-  font-weight: bold; /* Testo in grassetto */
-  font-size: 4em; /* Dimensione grande per desktop */
+  font-family: 'Roboto', sans-serif; 
+  color: #1976D2; 
+  font-weight: bold; 
+  font-size: 4em; 
 }
 
 .logo-image {
-  width: 4em; /* Dimensione del logo proporzionale al titolo */
+  width: 4em; 
   height: 4em;
-  object-fit: cover; /* Mantiene le proporzioni dell'immagine */
-  border-radius: 50%; /* Rende l'immagine rotonda */
+  object-fit: cover;
+  border-radius: 50%; 
 }
 
-/* Regole specifiche per schermi di dimensioni inferiori usando media queries */
+
 @media (max-width: 960px) {
-  /* Impostazioni per tablet e schermi di dimensioni medie */
+  
   .title {
-    font-size: 3em; /* Dimensione ridotta del titolo per schermi medi */
+    font-size: 3em; 
   }
   .logo-image {
-    width: 3em; /* Dimensione ridotta dell'immagine per schermi medi */
+    width: 3em; 
     height: 3em;
   }
 }
 
 @media (max-width: 600px) {
-  /* Impostazioni per smartphone e schermi piccoli */
+  
   .title {
-    font-size: 2em; /* Ulteriore riduzione per adattarsi a schermi stretti */
+    font-size: 2em; 
   }
   .logo-image {
-    width: 2em; /* Riduzione della dimensione dell'immagine per schermi stretti */
+    width: 2em; 
     height: 2em;
   }
 }
 
-/* Stili aggiuntivi per migliorare la disposizione e la spaziatura */
+
 .v-col {
-  padding: 0; /* Rimuove il padding predefinito per le colonne */
+  padding: 0; 
 }
 
 .mr-2 {
-  margin-right: 8px; /* Spazio a destra per gli icon */
+  margin-right: 8px; 
 }
 </style>
