@@ -6,7 +6,8 @@
       <h1 class="title">RimpiciRadio</h1>
     </div>
 
-    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Radio Stations" single-line hide-details></v-text-field>
+    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Radio Stations" single-line
+      hide-details></v-text-field>
 
     <v-row>
       <v-col cols="12" sm="12" md="10" lg="8" xl="6" offset-md="1" offset-lg="2" offset-xl="3">
@@ -15,7 +16,8 @@
             <tr>
               <td>
                 <div style="display: flex; align-items: center;">
-                  <img :src="item.favicon || defaultImage" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+                  <img :src="item.favicon || defaultImage"
+                    style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
                   <span>{{ item.name }}</span>
                 </div>
               </td>
@@ -104,28 +106,39 @@ export default {
       }
     },
     playRadio(item) {
-      const video = this.$refs.videoPlayer;
-      if (item.url.includes('m3u8')) {
+      const audioUrl = item.url; // Use this directly if 'url_resolved' does not exist in your data structure
+      const video = this.$refs.videoPlayer; // Using the ref to your video element
+
+      if (audioUrl.includes('m3u8')) {
         if (Hls.isSupported()) {
           if (this.currentHlsInstance) {
-            this.currentHlsInstance.destroy();
+            this.currentHlsInstance.destroy(); // Ensures that any previous instance is cleaned up
           }
           const hls = new Hls();
-          hls.loadSource(item.url);
+          hls.loadSource(audioUrl);
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play();
+            video.play().catch(error => {
+              console.error('Error playing audio:', error);
+              if (error.name === 'NotAllowedError') {
+                console.error('Please ensure that the audio playback is allowed in your browser settings.');
+              }
+            });
           });
           this.currentHlsInstance = hls;
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = item.url;
-          video.play();
+        } else {
+          console.error('HLS is not supported in this browser.');
         }
       } else {
-        video.src = item.url;
-        video.play();
+        video.src = audioUrl;
+        video.play().catch(error => {
+          console.error('Error playing audio:', error);
+          if (error.name === 'NotAllowedError') {
+            console.error('Please ensure that the audio playback is allowed in your browser settings.');
+          }
+        });
       }
-      this.currentRadio = item.url;
+      this.currentRadio = item.url; // Keeping track of the current playing radio URL
     },
     stopRadio() {
       const video = this.$refs.videoPlayer;
@@ -178,7 +191,9 @@ export default {
 }
 
 @media (max-width: 600px) {
-  .radio-info, .radio-actions {
+
+  .radio-info,
+  .radio-actions {
     justify-content: flex-start;
   }
 
@@ -197,7 +212,8 @@ export default {
   margin-right: 8px;
 }
 
-.radio-info, .radio-actions {
+.radio-info,
+.radio-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
