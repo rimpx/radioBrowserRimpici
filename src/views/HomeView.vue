@@ -6,31 +6,30 @@
       <h1 class="title">RimpiciRadio</h1>
     </div>
 
-    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Radio Stations" single-line
-      hide-details></v-text-field>
+    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search Radio Stations" single-line hide-details></v-text-field>
 
     <v-row>
       <v-col cols="12" sm="12" md="10" lg="8" xl="6" offset-md="1" offset-lg="2" offset-xl="3">
         <v-data-table :headers="headers" :items="radios" :search="search" hide-default-footer class="elevation-1">
-
-          <template v-slot:[`item.name`]="{ item }">
-            <div style="display: flex; align-items: center;">
-              <img :src="item.favicon || 'default-image.jpg'"
-                style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
-              <v-icon small class="mr-2">mdi-radio</v-icon>
-              <span>{{ item.name }}</span>
-            </div>
-          </template>
-
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-btn icon @click="togglePlay(item)">
-              <v-icon>
-                {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
-              </v-icon>
-            </v-btn>
-            <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
-              <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-            </v-btn>
+          <template v-slot:item="{ item }">
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center;">
+                  <img :src="item.favicon || defaultImage" style="width: 40px; height: 40px; margin-right: 16px; border-radius: 50%;">
+                  <span>{{ item.name }}</span>
+                </div>
+              </td>
+              <td>
+                <v-btn icon @click="togglePlay(item)">
+                  <v-icon>
+                    {{ currentRadio === item.url ? 'mdi-stop' : 'mdi-play' }}
+                  </v-icon>
+                </v-btn>
+                <v-btn icon :color="isFavorite(item) ? 'red' : 'grey'" @click="toggleFavorite(item)">
+                  <v-icon>{{ isFavorite(item) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+                </v-btn>
+              </td>
+            </tr>
           </template>
         </v-data-table>
       </v-col>
@@ -93,7 +92,6 @@ export default {
     updateLocalStorageFavorites() {
       localStorage.setItem('favorites', JSON.stringify(this.favorites));
       this.favorites = [...this.favorites];
-      //this.updateKey++; // Incrementa la chiave per forzare l'aggiornamento
     },
     isFavorite(item) {
       return this.favorites.some(fav => fav.id === item.id);
@@ -141,57 +139,78 @@ export default {
       this.currentRadio = null;
     }
   },
+  beforeUnmount() {
+    this.stopRadio();  // Stop any playing radio when the component is being unmounted
+  },
   created() {
     this.getRadios();
   },
 }
 </script>
 
-<style scoped>
 
+<style scoped>
 .title {
-  font-family: 'Roboto', sans-serif; 
-  color: #1976D2; 
-  font-weight: bold; 
-  font-size: 4em; 
+  font-family: 'Roboto', sans-serif;
+  color: #1976D2;
+  font-weight: bold;
+  font-size: 4em;
 }
 
 .logo-image {
-  width: 4em; 
+  width: 4em;
   height: 4em;
   object-fit: cover;
-  border-radius: 50%; 
+  border-radius: 50%;
 }
 
 
 @media (max-width: 960px) {
-  
+
   .title {
-    font-size: 3em; 
+    font-size: 3em;
   }
+
   .logo-image {
-    width: 3em; 
+    width: 3em;
     height: 3em;
   }
 }
 
 @media (max-width: 600px) {
-  
-  .title {
-    font-size: 2em; 
+  .radio-info, .radio-actions {
+    justify-content: flex-start;
   }
-  .logo-image {
-    width: 2em; 
-    height: 2em;
+
+  .radio-actions {
+    flex-grow: 1;
+    justify-content: flex-end;
   }
 }
 
 
 .v-col {
-  padding: 0; 
+  padding: 0;
 }
 
 .mr-2 {
-  margin-right: 8px; 
+  margin-right: 8px;
+}
+
+.radio-info, .radio-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.radio-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
+  border-radius: 50%;
+}
+
+.radio-name {
+  flex-grow: 1;
 }
 </style>

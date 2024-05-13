@@ -28,19 +28,27 @@ export default {
             earthRadius: 1,
             radios: [],
             selectedRadio: null,
+            currentPlayingRadio: null, // Keeps track of the currently playing radio
             defaultImage,
-            mouse: new THREE.Vector2(),  // Inizializzazione qui
+            mouse: new THREE.Vector2(),
             raycaster: new THREE.Raycaster(),
         };
     },
+
 
     mounted() {
         this.initThree();
         this.getRadios();
         window.addEventListener('resize', this.onWindowResize);
-        window.addEventListener('click', this.onDocumentMouseClick.bind(this)); // Binding the context
-        this.animate = this.animate.bind(this); // Binding the context
-        this.animate(); // Now 'this' inside animate will refer to the Vue instance correctly
+        window.addEventListener('click', this.onDocumentMouseClick.bind(this));
+        this.animate = this.animate.bind(this);
+        this.animate();
+    },
+    beforeUnmount() {
+        // Stop any playing radio when the component is being unmounted
+        if (this.currentPlayingRadio && this.currentPlayingRadio.audioPlayer) {
+            this.currentPlayingRadio.audioPlayer.pause();
+        }
     },
 
     methods: {
@@ -123,16 +131,14 @@ export default {
             }
         },
         playRadio(radio) {
-           
-            if (this.selectedRadio && this.selectedRadio !== radio && this.selectedRadio.audioPlayer) {
-                this.selectedRadio.audioPlayer.pause();
-                this.selectedRadio.playing = false;
+            // Stop the currently playing radio if there is one
+            if (this.currentPlayingRadio && this.currentPlayingRadio !== radio && this.currentPlayingRadio.audioPlayer) {
+                this.currentPlayingRadio.audioPlayer.pause();
+                this.currentPlayingRadio.playing = false;
             }
 
-            // Imposta la radio selezionata come la corrente
-            this.selectedRadio = radio;
+            this.currentPlayingRadio = radio; // Update the currently playing radio
 
-            // Se l'audio player non esiste, lo crea
             if (!radio.audioPlayer) {
                 radio.audioPlayer = new Audio(radio.url);
                 radio.audioPlayer.addEventListener('canplaythrough', () => {
@@ -157,17 +163,10 @@ export default {
             }
         },
         togglePlayPause(radio) {
-            // Se la radio selezionata è già in riproduzione, la ferma
             if (radio.playing) {
                 radio.audioPlayer.pause();
                 radio.playing = false;
             } else {
-                // Ferma qualsiasi altra stazione radio che potrebbe essere in riproduzione
-                if (this.selectedRadio && this.selectedRadio !== radio && this.selectedRadio.audioPlayer) {
-                    this.selectedRadio.audioPlayer.pause();
-                    this.selectedRadio.playing = false;
-                }
-                // Avvia la riproduzione della radio selezionata
                 this.playRadio(radio);
             }
         },

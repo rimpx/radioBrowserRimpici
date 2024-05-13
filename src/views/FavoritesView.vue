@@ -57,6 +57,9 @@ export default {
   created() {
     this.loadFavorites();
   },
+  beforeUnmount() {
+    this.stopRadio(); // Stop any radio playing when the component is unmounted
+  },
   methods: {
     loadFavorites() {
       this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -122,6 +125,7 @@ export default {
   }
 }
 </script>
+
 
 
 
