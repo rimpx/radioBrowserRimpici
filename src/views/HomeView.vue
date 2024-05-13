@@ -105,7 +105,7 @@ export default {
     },
     playRadio(item) {
       const video = this.$refs.videoPlayer;
-      if (item.url.endsWith('.m3u8')) {
+      if (item.url.includes('.m3u8')) {
         if (Hls.isSupported()) {
           if (this.currentHlsInstance) {
             this.currentHlsInstance.destroy();
